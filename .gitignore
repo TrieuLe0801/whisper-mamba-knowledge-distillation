@@ -1,0 +1,56 @@
+# Python and notebooks
+__pycache__/
+*.py[cod]
+*.so
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# Local data, feature caches, models, checkpoints, and generated results
+/data/
+/dataset/
+/datasets/
+/cache/
+/caches/
+/checkpoints/
+/models/
+/outputs/
+/results/
+/artifacts/
+/edge_asr/checkpoints/
+/edge_asr/wandb/
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.safetensors
+*.onnx
+*.npz
+*.npy
+*.h5
+*.hdf5
+*.parquet
+*.csv
+*.tsv
+*.jsonl
+*.log
+wandb/
+training_log.jsonl
+
+# Secrets and local environment
+.env
+.env.*
+*.pem
+*.key
+secrets.*
+
+
+# Local helper and recovery scripts
+/_*.py
+/__huggingface_repos__.json
