@@ -25,6 +25,7 @@ env/
 /artifacts/
 /edge_asr/checkpoints/
 /edge_asr/wandb/
+/edge_asr/*
 *.pt
 *.pth
 *.ckpt
