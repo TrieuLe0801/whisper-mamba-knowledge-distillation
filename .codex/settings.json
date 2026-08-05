@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "\\.py$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "autopep8 --in-place --aggressive --max-line-length 88 {{cwd}}/{{file_path}}",
+            "timeout": 60,
+            "statusMessage": "Formatting Python code with autopep8"
+          }
+        ]
+      }
+    ]
+  }
+}
