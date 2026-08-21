@@ -17,7 +17,7 @@ Training artifacts, cached features, datasets, checkpoints, logs, W&B runs, and 
 
 - **Teacher:** Whisper large-v3 encoder.
 - **Student:** causal ConMamba encoder (`18` layers, `d_model=256`) with a 4×-subsampling CNN log-mel front end.
-- **Objectives:** masked cosine feature distillation (teacher features interpolated to the student frame rate) and CTC over a 5,000-piece SentencePiece vocabulary.
+- **Objectives:** masked cosine feature distillation (teacher features interpolated to the student frame rate) and CTC over a train-only 8,000-piece SentencePiece vocabulary. The uploaded 5,000-piece tokenizer is legacy cache/checkpoint lineage only.
 - **Streaming focus:** the ConMamba backbone is unidirectional. The encoder is deliberately evaluated in fp32 because selective scan can overflow in fp16 on long sequences.
 
 ## Running on Kaggle
@@ -27,11 +27,14 @@ The notebook is designed for a Kaggle GPU session, tested with 2× Tesla T4 GPUs
 1. Set up the GPU environment and dependencies.
 2. Configure data/cache paths in the `Config` cell.
 3. Generate or supply the pseudo-label, teacher-feature, and companion mel caches.
-4. Run the smoke test.
-5. Start resumable KD and CTC training.
-6. Run evaluation and, if needed, the CTC-collapse diagnostic cell.
+4. Run the cache-pair audit; it samples local NPZ shards only and does not load audio or allocate GPU memory.
+5. Run the smoke test.
+6. Start resumable KD and CTC training.
+7. Run evaluation and, if needed, the CTC-collapse diagnostic cell.
 
-The mel cache must align one-to-one with the teacher-feature cache before training can begin. Kaggle input mounts are read-only; write intermediate outputs and checkpoints under `/kaggle/working`.
+The mel cache must align one-to-one with the teacher-feature cache before training can begin. The notebook checks cache schema/alignment before smoke and validates every retokenized CTC target while indexing. Kaggle input mounts are read-only; write intermediate outputs and checkpoints under `/kaggle/working`.
+
+Pseudo-label, filter, and cache-generation cells default to disabled. Enable their `RUN_CHUNK_*` flags only when intentionally creating a new Kaggle upload; normal training reuses and audits the attached cache pair.
 
 ## Notes
 
